@@ -1,3 +1,29 @@
+# prunez (fork)
+
+> **This is a modified fork of [CrescentKohana/prunez](https://github.com/CrescentKohana/prunez)**
+> (originally by Marko Leinikka, zlib License; see `LICENSE`, unchanged).
+> It is not the original software.
+
+## Changes in this fork
+
+- Reuses a single HTTP client for all requests instead of opening a new
+  connection per delete. Fixes frequent `connection closed via error` crashes.
+- Retries failed requests (up to 10 times, 10 s apart) instead of panicking.
+- Adds `scripts/merge_listens.py`, which converts ListenBrainz's newer export
+  format (zip with `listens/<year>/<month>.jsonl`) into the single
+  `listens.json` that prunez expects.
+
+## Using the new export format
+
+1. On listenbrainz.org, go to Settings → Export data, request an export and unzip the download.
+2. Merge the listens into the single file prunez expects:
+
+```
+   python3 scripts/merge_listens.py <unzipped export>/listens listens.json
+```
+
+3. Run prunez as described below.
+
 # ListenBrainz Prune
 
 [![Rust Build](https://github.com/Luukuton/prunez/actions/workflows/rust.yml/badge.svg)](https://github.com/Luukuton/prunez/actions/workflows/rust.yml)
